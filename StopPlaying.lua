@@ -3,7 +3,7 @@ StopPlaying = StopPlaying or {}
 local SP = StopPlaying
 
 SP.ADDON = "StopPlaying"
-SP.VERSION = "1.3.1"
+SP.VERSION = "1.4.0"
 
 local DEFER_INSTANCE_TYPES = {
   party = true,
@@ -15,6 +15,9 @@ local DEFER_INSTANCE_TYPES = {
 local defaults = {
   hudVisible = true,
   hudPoint = { "TOP", nil, "TOP", 0, -8 },
+  hudScale = 1.0,
+  hudFont = "Friz Quadrata TT",
+  hudFontSize = 12,
   timerMode = "off",
   timerEndsAt = nil,
   timerStartedAt = nil,
@@ -37,6 +40,12 @@ function SP.EnsureDB()
     if StopPlayingDB[k] == nil then
       StopPlayingDB[k] = DeepCopy(v)
     end
+  end
+  -- Clamp scale if present but out of range
+  local sc = tonumber(StopPlayingDB.hudScale)
+  if sc then
+    if sc < 0.6 then StopPlayingDB.hudScale = 0.6 end
+    if sc > 2.0 then StopPlayingDB.hudScale = 2.0 end
   end
   SP.db = StopPlayingDB
 end

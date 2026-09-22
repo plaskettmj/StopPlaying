@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+- **Resizable HUD** — SavedVariables `hudScale` (default 1.0, clamp 0.6–2.0); Options slider 60%–200%; applied via `SetScale` + `Hud:ApplyAppearance()`
+- **HUD font style** — `hudFont` (default `Friz Quadrata TT` → `Fonts\FRIZQT__.TTF`) and `hudFontSize` (default 12)
+  - Built-in dropdown: Friz Quadrata TT, Arial Narrow, Morpheus, Skurri
+  - OptionalDeps `LibSharedMedia-3.0`: when present, LSM fonts merge into the dropdown; callbacks refresh the list
+- **Elapsed breakpoint editors** — Options UI edits amber / red / pulse in **minutes** (DB still stores seconds)
+  - EditBox + ±1 arrows (Shift ±5); constraint `1 ≤ amber < red < pulse ≤ 600` with gentle auto-clamp
+  - Visual segmented bar (0→amber green, amber→red amber, red→pulse red, pulse→end pulsing); domain `0 .. max(pulse×1.1, 120)` minutes; draggable markers sync both ways with the editors
+- **Options architecture** — single canvas Settings category (`RegisterCanvasLayoutCategory`) with General / Appearance / Elapsed sections; `/sp options` still opens category ID `StopPlaying`
+
 ## 1.3.1
 
 - `/sp timer` with no minutes uses the default countdown from Settings.
