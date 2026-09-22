@@ -1,4 +1,4 @@
-﻿--[[ Session timer: countdown or elapsed with breakpoints ]]
+--[[ Session timer: countdown or elapsed with breakpoints ]]
 StopPlaying = StopPlaying or {}
 StopPlaying.UI = StopPlaying.UI or {}
 StopPlaying.UI.Timer = StopPlaying.UI.Timer or {}
@@ -19,7 +19,11 @@ function T:Init()
     self._fired = false
   elseif db.timerMode == "countdown" and db.timerEndsAt and db.timerEndsAt <= time() then
     self._fired = true
-    if StopPlaying.UI.Flash then StopPlaying.UI.Flash:Show() end
+    if StopPlaying.TriggerSessionOver then
+      StopPlaying.TriggerSessionOver("init")
+    elseif StopPlaying.UI.Flash then
+      StopPlaying.UI.Flash:Show()
+    end
   end
 end
 
@@ -29,6 +33,7 @@ function T:StartCountdown(minutes)
   db.timerStartedAt = time()
   db.timerEndsAt = time() + math.floor(minutes * 60)
   self._fired = false
+  if StopPlaying.SetPendingSessionOver then StopPlaying.SetPendingSessionOver(false) end
   if StopPlaying.UI.Flash then StopPlaying.UI.Flash:Hide() end
   StopPlaying.Print(string.format("Countdown %d min — stop when it hits zero", minutes))
   self:Tick()
@@ -40,6 +45,7 @@ function T:StartElapsed()
   db.timerStartedAt = time()
   db.timerEndsAt = nil
   self._fired = false
+  if StopPlaying.SetPendingSessionOver then StopPlaying.SetPendingSessionOver(false) end
   if StopPlaying.UI.Flash then StopPlaying.UI.Flash:Hide() end
   StopPlaying.Print("Elapsed session timer started (amber/red/pulse breakpoints)")
   self:Tick()
@@ -51,6 +57,7 @@ function T:Stop()
   db.timerEndsAt = nil
   db.timerStartedAt = nil
   self._fired = false
+  if StopPlaying.SetPendingSessionOver then StopPlaying.SetPendingSessionOver(false) end
   if StopPlaying.UI.Flash then StopPlaying.UI.Flash:Hide() end
   if StopPlaying.UI.Hud and StopPlaying.UI.Hud.Refresh then StopPlaying.UI.Hud:Refresh() end
   StopPlaying.Print("Timer stopped")
@@ -60,7 +67,13 @@ function T:GetDisplay()
   local db = StopPlaying.db
   if db.timerMode == "countdown" and db.timerEndsAt then
     local left = db.timerEndsAt - time()
-    return "CD " .. Fmt(math.max(0, left)), left
+    local label = "CD " .. Fmt(math.max(0, left))
+    if StopPlaying.IsPendingSessionOver and StopPlaying.IsPendingSessionOver() then
+      label = "CD PENDING"
+    elseif left <= 0 then
+      label = "CD OVER"
+    end
+    return label, left
   elseif db.timerMode == "elapsed" and db.timerStartedAt then
     local elapsed = time() - db.timerStartedAt
     return "EL " .. Fmt(elapsed), elapsed
@@ -70,6 +83,9 @@ end
 
 function T:ElapsedColor()
   local db = StopPlaying.db
+  if StopPlaying.IsPendingSessionOver and StopPlaying.IsPendingSessionOver() then
+    return 1, 0.75, 0.2
+  end
   if db.timerMode ~= "elapsed" or not db.timerStartedAt then return 1, 1, 1 end
   local elapsed = time() - db.timerStartedAt
   local bp = (StopPlaying.Config and StopPlaying.Config.GetBreakpoints and StopPlaying.Config:GetBreakpoints()) or db.breakpoints
@@ -89,7 +105,11 @@ function T:Tick()
   if db.timerMode == "countdown" and db.timerEndsAt then
     if (db.timerEndsAt - time()) <= 0 and not self._fired then
       self._fired = true
-      if StopPlaying.UI.Flash then StopPlaying.UI.Flash:Show() end
+      if StopPlaying.TriggerSessionOver then
+        StopPlaying.TriggerSessionOver("tick")
+      elseif StopPlaying.UI.Flash then
+        StopPlaying.UI.Flash:Show()
+      end
     end
   end
   if StopPlaying.UI.Hud and StopPlaying.UI.Hud.Refresh then

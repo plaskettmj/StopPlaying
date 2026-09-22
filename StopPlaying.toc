@@ -1,8 +1,8 @@
-﻿## Interface: 120100, 120007
+## Interface: 120100, 120007
 ## Title: StopPlaying
 ## Notes: Session countdown / elapsed timer with a full-screen stop alert. Drag the HUD chip to move it.
 ## Author: plaskettmj
-## Version: 1.1.0
+## Version: 1.2.0
 ## SavedVariables: StopPlayingDB
 ## X-License: MIT
 ## X-Website: https://github.com/plaskettmj/StopPlaying
