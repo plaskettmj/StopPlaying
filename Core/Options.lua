@@ -162,6 +162,7 @@ local function BuildBreakpointSection(parent, yTop)
 
   local title = Label(parent, "Elapsed breakpoints (minutes)")
   title:SetPoint("TOPLEFT", parent, "TOPLEFT", 16, yTop)
+  title:SetTextColor(1, 0.82, 0)
   yTop = yTop - 22
 
   local keys = {
@@ -357,12 +358,42 @@ end
 -- Font dropdown
 ---------------------------------------------------------------------------
 
+local DEFAULT_FONT_PATH_FALLBACK = "Fonts\\FRIZQT__.TTF"
+
+local function UpdateFontPreview()
+  local preview = widgets.fontPreview
+  if not preview then return end
+  SP.EnsureDB()
+  local key = SP.db.hudFont or "Friz Quadrata TT"
+  local size = tonumber(SP.db.hudFontSize) or 12
+  local path = DEFAULT_FONT_PATH_FALLBACK
+  if SP.UI and SP.UI.Hud and SP.UI.Hud.ResolveFontPath then
+    path = select(1, SP.UI.Hud:ResolveFontPath(key))
+  end
+  local ok = pcall(function()
+    preview:SetFont(path, math.max(12, size), "OUTLINE")
+  end)
+  if not ok then
+    pcall(function()
+      local f, _, flags = GameFontHighlight:GetFont()
+      preview:SetFont(f, math.max(12, size), flags or "OUTLINE")
+    end)
+  end
+  preview:SetText("Preview: CD 45:00")
+  preview:SetTextColor(0.85, 0.95, 0.85)
+end
+
 local function BuildFontDropdown(parent, anchor)
   local label = Label(parent, "HUD font")
   label:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -18)
 
   local dd = CreateFrame("Frame", "StopPlayingFontDropdown", parent, "UIDropDownMenuTemplate")
   dd:SetPoint("LEFT", label, "LEFT", 90, -2)
+
+  local preview = parent:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+  preview:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 0, -10)
+  preview:SetText("Preview: CD 45:00")
+  widgets.fontPreview = preview
 
   local function Selected()
     SP.EnsureDB()
@@ -374,6 +405,14 @@ local function BuildFontDropdown(parent, anchor)
     pcall(UIDropDownMenu_SetText, dd, Selected())
   end
 
+  local function ApplyFontChoice(key)
+    SP.EnsureDB()
+    SP.db.hudFont = key
+    ApplyHudAppearance()
+    UpdateFontPreview()
+    RefreshDD()
+  end
+
   local function Initialize(self, level)
     local keys = CollectFontKeys()
     local info
@@ -382,10 +421,7 @@ local function BuildFontDropdown(parent, anchor)
       info.text = key
       info.checked = (key == Selected())
       info.func = function()
-        SP.EnsureDB()
-        SP.db.hudFont = key
-        ApplyHudAppearance()
-        RefreshDD()
+        ApplyFontChoice(key)
       end
       UIDropDownMenu_AddButton(info, level)
     end
@@ -394,11 +430,13 @@ local function BuildFontDropdown(parent, anchor)
   pcall(UIDropDownMenu_Initialize, dd, Initialize)
   pcall(UIDropDownMenu_SetWidth, dd, 180)
   RefreshDD()
+  UpdateFontPreview()
 
   widgets.fontDropdown = dd
   widgets.RefreshFontDropdown = function()
     pcall(UIDropDownMenu_Initialize, dd, Initialize)
     RefreshDD()
+    UpdateFontPreview()
   end
 
   -- LibSharedMedia callbacks: refresh list when fonts are registered
@@ -584,19 +622,18 @@ local function BuildCanvas()
   fontAnchor:SetSize(1, 1)
   fontAnchor:SetPoint("TOPLEFT", content, "TOPLEFT", 16, y)
   BuildFontDropdown(content, fontAnchor)
-  y = y - 50
+  y = y - 58
 
-  local fontHint = Label(content, "Built-in Blizzard fonts; LibSharedMedia fonts appear when LSM is loaded.")
+  local fontHint = Label(content, "Preview updates instantly. The HUD chip updates immediately too — no /reload needed.")
   fontHint:SetPoint("TOPLEFT", content, "TOPLEFT", 16, y)
   fontHint:SetTextColor(0.6, 0.6, 0.6)
-  y = y - 30
+  y = y - 18
+  local fontHint2 = Label(content, "Built-in Blizzard fonts; LibSharedMedia fonts appear when LSM is loaded.")
+  fontHint2:SetPoint("TOPLEFT", content, "TOPLEFT", 16, y)
+  fontHint2:SetTextColor(0.6, 0.6, 0.6)
+  y = y - 28
 
-  -- --- Elapsed breakpoints ---
-  local bpTitle = Label(content, "Elapsed")
-  bpTitle:SetPoint("TOPLEFT", content, "TOPLEFT", 16, y)
-  bpTitle:SetTextColor(1, 0.82, 0)
-  y = y - 8
-
+  -- --- Elapsed breakpoints (title lives inside BuildBreakpointSection) ---
   local newY = BuildBreakpointSection(content, y)
   y = newY - 20
 
@@ -628,6 +665,7 @@ local function BuildCanvas()
       scaleVal:SetText(pct .. "%")
     end
     if widgets.RefreshFontDropdown then widgets.RefreshFontDropdown() end
+    if UpdateFontPreview then UpdateFontPreview() end
     RefreshBreakpointUI()
   end)
 

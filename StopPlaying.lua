@@ -3,7 +3,7 @@ StopPlaying = StopPlaying or {}
 local SP = StopPlaying
 
 SP.ADDON = "StopPlaying"
-SP.VERSION = "1.4.0"
+SP.VERSION = "1.4.1"
 
 local DEFER_INSTANCE_TYPES = {
   party = true,
