@@ -2,7 +2,7 @@
 ## Title: StopPlaying
 ## Notes: Session countdown / elapsed timer with a full-screen stop alert. Drag the HUD chip to move it.
 ## Author: plaskettmj
-## Version: 1.4.1
+## Version: 1.4.2
 ## SavedVariables: StopPlayingDB
 ## OptionalDeps: ElvUI, Masque, Skinner, Aurora, LibSharedMedia-3.0
 ## X-License: MIT

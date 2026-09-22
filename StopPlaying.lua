@@ -3,7 +3,7 @@ StopPlaying = StopPlaying or {}
 local SP = StopPlaying
 
 SP.ADDON = "StopPlaying"
-SP.VERSION = "1.4.1"
+SP.VERSION = "1.4.2"
 
 local DEFER_INSTANCE_TYPES = {
   party = true,
@@ -22,7 +22,7 @@ local defaults = {
   timerEndsAt = nil,
   timerStartedAt = nil,
   countdownMinutesDefault = 60,
-  breakpoints = { amber = 45 * 60, red = 75 * 60, pulse = 90 * 60 },
+  breakpoints = { amber = 60 * 60, red = 120 * 60, pulse = 180 * 60 },
   deferInInstances = true,
   pendingSessionOver = false,
 }
@@ -40,6 +40,12 @@ function SP.EnsureDB()
     if StopPlayingDB[k] == nil then
       StopPlayingDB[k] = DeepCopy(v)
     end
+  end
+  -- One-time bump from pre-1.4.2 breakpoint defaults (45/75/90 min)
+  local bp = StopPlayingDB.breakpoints
+  if type(bp) == "table"
+      and bp.amber == 45 * 60 and bp.red == 75 * 60 and bp.pulse == 90 * 60 then
+    StopPlayingDB.breakpoints = DeepCopy(defaults.breakpoints)
   end
   -- Clamp scale if present but out of range
   local sc = tonumber(StopPlayingDB.hudScale)

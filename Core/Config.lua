@@ -12,24 +12,24 @@ end
 --- Seconds table { amber, red, pulse }
 function C:GetBreakpoints()
   local db = StopPlaying.db
-  return db.breakpoints or { amber = 45 * 60, red = 75 * 60, pulse = 90 * 60 }
+  return db.breakpoints or { amber = 60 * 60, red = 120 * 60, pulse = 180 * 60 }
 end
 
 --- Minutes table { amber, red, pulse } (integers)
 function C:GetBreakpointsMinutes()
   local bp = self:GetBreakpoints()
   return {
-    amber = math.floor((bp.amber or 2700) / 60 + 0.5),
-    red   = math.floor((bp.red   or 4500) / 60 + 0.5),
-    pulse = math.floor((bp.pulse or 5400) / 60 + 0.5),
+    amber = math.floor((bp.amber or 3600) / 60 + 0.5),
+    red   = math.floor((bp.red   or 7200) / 60 + 0.5),
+    pulse = math.floor((bp.pulse or 10800) / 60 + 0.5),
   }
 end
 
 --- Gentle clamp/reorder so 1 ≤ amber < red < pulse ≤ 600
 function C:NormalizeBreakpointsMinutes(amber, red, pulse)
-  amber = math.floor(tonumber(amber) or 45)
-  red   = math.floor(tonumber(red) or 75)
-  pulse = math.floor(tonumber(pulse) or 90)
+  amber = math.floor(tonumber(amber) or 60)
+  red   = math.floor(tonumber(red) or 120)
+  pulse = math.floor(tonumber(pulse) or 180)
 
   amber = math.max(BP_MIN, math.min(BP_MAX - 2, amber))
   red   = math.max(BP_MIN + 1, math.min(BP_MAX - 1, red))
