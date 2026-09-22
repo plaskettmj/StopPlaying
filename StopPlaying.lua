@@ -3,7 +3,7 @@ StopPlaying = StopPlaying or {}
 local SP = StopPlaying
 
 SP.ADDON = "StopPlaying"
-SP.VERSION = "1.3.0"
+SP.VERSION = "1.3.1"
 
 local DEFER_INSTANCE_TYPES = {
   party = true,
@@ -109,7 +109,7 @@ function SP.MaybeFlushPendingSessionOver()
 end
 
 local function Usage()
-  Print("Usage: /sp timer <min> | /sp timer stop | /sp elapsed | /sp hud | /sp defer [on|off] | /sp options")
+  Print("Usage: /sp timer [min] | /sp timer stop | /sp elapsed | /sp hud | /sp defer [on|off] | /sp options")
 end
 
 SLASH_STOPPLAYING1 = "/sp"
@@ -175,7 +175,13 @@ SlashCmdList.STOPPLAYING = function(msg)
       if SP.UI and SP.UI.Timer then SP.UI.Timer:Stop() end
       return
     end
-    local mins = tonumber(rest)
+    local mins
+    if rest == "" then
+      SP.EnsureDB()
+      mins = tonumber(SP.db.countdownMinutesDefault) or 60
+    else
+      mins = tonumber(rest)
+    end
     if not mins or mins <= 0 then
       Usage()
       return

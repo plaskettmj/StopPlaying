@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+
+- `/sp timer` with no minutes uses the default countdown from Settings.
+
 ## 1.3.0
 - **Settings panel** — Blizzard Settings → AddOns → StopPlaying (modern Settings API)
   - Defer SESSION OVER in dungeons/raids/PvP (`deferInInstances`, default on)
