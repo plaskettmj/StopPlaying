@@ -3,7 +3,7 @@ StopPlaying = StopPlaying or {}
 local SP = StopPlaying
 
 SP.ADDON = "StopPlaying"
-SP.VERSION = "1.2.0"
+SP.VERSION = "1.3.0"
 
 local DEFER_INSTANCE_TYPES = {
   party = true,
@@ -109,7 +109,7 @@ function SP.MaybeFlushPendingSessionOver()
 end
 
 local function Usage()
-  Print("Usage: /sp timer <min> | /sp timer stop | /sp elapsed | /sp hud | /sp defer [on|off]")
+  Print("Usage: /sp timer <min> | /sp timer stop | /sp elapsed | /sp hud | /sp defer [on|off] | /sp options")
 end
 
 SLASH_STOPPLAYING1 = "/sp"
@@ -123,6 +123,15 @@ SlashCmdList.STOPPLAYING = function(msg)
   if cmd == "" or cmd == "help" then
     Usage()
     Print("  defer — toggle/instance-defer SESSION OVER (default on). /sp defer | /sp defer on|off")
+    Print("  options|config — open Blizzard Settings → AddOns → StopPlaying")
+    return
+  end
+  if cmd == "options" or cmd == "config" then
+    if SP.Options and SP.Options.Open then
+      SP.Options:Open()
+    else
+      Print("Options panel not available")
+    end
     return
   end
   if cmd == "hud" then
@@ -193,11 +202,13 @@ frame:SetScript("OnEvent", function(_, event, arg1)
       if SP.UI.Timer and SP.UI.Timer.Init then SP.UI.Timer:Init() end
       if SP.UI.Hud and SP.UI.Hud.Init then SP.UI.Hud:Init() end
     end
+    if SP.Skins and SP.Skins.Apply then SP.Skins:Apply() end
+    if SP.Options and SP.Options.Register then SP.Options:Register() end
     -- After /reload mid-dungeon with pending flag, wait for leave
     if SP.IsPendingSessionOver() then
       C_Timer.After(0.5, function() SP.MaybeFlushPendingSessionOver() end)
     end
-    Print("v" .. SP.VERSION .. " ready — /sp timer 60 · /sp defer")
+    Print("v" .. SP.VERSION .. " ready — /sp timer 60 · /sp options · /sp defer")
   elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
     SP.EnsureDB()
     SP.MaybeFlushPendingSessionOver()

@@ -1,4 +1,4 @@
-﻿--[[ Full-UI flash overlay when countdown hits zero ]]
+--[[ Full-UI flash overlay when countdown hits zero ]]
 StopPlaying = StopPlaying or {}
 StopPlaying.UI = StopPlaying.UI or {}
 StopPlaying.UI.Flash = StopPlaying.UI.Flash or {}
@@ -45,6 +45,9 @@ function F:Init()
   end)
 
   self.frame = f
+  -- Refs for soft skin hooks (Masque / ElvUI / Skinner / Aurora)
+  self.plusBtn = f.plus
+  self.dismissBtn = f.dismiss
 end
 
 function F:Show()
