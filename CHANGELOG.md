@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.4
+- Docs: Retail **and** WoW Forever both supported (install paths + CurseForge link in README)
+- TOC Notes updated for dual-client support; `X-Curse-Project-ID` added
+
 ## 1.4.3
 - Media: replace Settings gallery shot; add breakpoints Options screenshot (`04-settings.png`, `05-settings-breakpoints.png`)
 

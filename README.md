@@ -2,7 +2,12 @@
 
 A lightweight World of Warcraft session timer. Set a play budget, watch a movable HUD chip, and get a hard-to-ignore full-screen alert when time is up.
 
-Works on current Midnight-era retail (`## Interface` 120100 / 120007). Optional for WoW Forever once that client reports its interface version.
+**Supported clients:** Midnight-era **Retail** and **WoW Forever** (Beta folder _classic_beta_). Both will stay supported going forward.
+
+- Retail: `## Interface` `120100` / `120007`
+- WoW Forever: same addon folder works in `World of Warcraft\_classic_beta_\Interface\AddOns\` (verified in-game)
+
+**CurseForge:** https://www.curseforge.com/wow/addons/stopplaying
 
 ## Features
 - **Countdown** — `/sp timer` uses Settings default; `/sp timer 60` overrides
@@ -15,8 +20,10 @@ Works on current Midnight-era retail (`## Interface` 120100 / 120007). Optional 
 - **LibSharedMedia fonts** (v1.4.0, optional) — when `LibSharedMedia-3.0` is loaded, its fonts appear in the HUD font dropdown
 
 ## Install
-1. Download a release zip (or clone this repo)
+1. Download from [CurseForge](https://www.curseforge.com/wow/addons/stopplaying) (or clone this repo / use a release zip)
 2. Ensure the folder is named `StopPlaying` inside `Interface\AddOns\`
+   - Retail: `World of Warcraft\_retail_\Interface\AddOns\`
+   - WoW Forever (current Beta): `World of Warcraft\_classic_beta_\Interface\AddOns\`
 3. Enable the addon at character select and `/reload`
 
 ## Options
@@ -71,4 +78,6 @@ CurseForge gallery screenshots live in `media/`:
 - `05-settings-breakpoints.png` — Options: HUD font + elapsed breakpoints
 
 ## CurseForge
-Project listing TBD after author portal setup.
+https://www.curseforge.com/wow/addons/stopplaying
+
+Project ID `1706661`. Retail and WoW Forever are both supported; keep the same zip in each client's `AddOns` folder (or let the CurseForge app install to both when Forever is listed as a flavor).

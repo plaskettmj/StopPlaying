@@ -1,12 +1,13 @@
 ## Interface: 120100, 120007
 ## Title: StopPlaying
-## Notes: Session countdown / elapsed timer with a full-screen stop alert. Drag the HUD chip to move it.
+## Notes: Session timer for Retail and WoW Forever. Countdown / elapsed HUD with a full-screen stop alert. Drag the HUD chip to move it.
 ## Author: plaskettmj
-## Version: 1.4.3
+## Version: 1.4.4
 ## SavedVariables: StopPlayingDB
 ## OptionalDeps: ElvUI, Masque, Skinner, Aurora, LibSharedMedia-3.0
 ## X-License: MIT
 ## X-Website: https://github.com/plaskettmj/StopPlaying
+## X-Curse-Project-ID: 1706661
 
 StopPlaying.lua
 Core\Config.lua
