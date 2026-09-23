@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.3
+- Media: replace Settings gallery shot; add breakpoints Options screenshot (`04-settings.png`, `05-settings-breakpoints.png`)
+
 ## 1.4.0
 - **Resizable HUD** — SavedVariables `hudScale` (default 1.0, clamp 0.6–2.0); Options slider 60%–200%; applied via `SetScale` + `Hud:ApplyAppearance()`
 - **HUD font style** — `hudFont` (default `Friz Quadrata TT` → `Fonts\FRIZQT__.TTF`) and `hudFontSize` (default 12)

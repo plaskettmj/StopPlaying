@@ -67,7 +67,8 @@ CurseForge gallery screenshots live in `media/`:
 - `01-session-over.png` — SESSION OVER flash
 - `02-countdown-hud.png` — countdown HUD
 - `03-timer-idle.png` — idle HUD
-- `04-settings.png` — Settings → AddOns panel
+- `04-settings.png` — Options: General + Appearance
+- `05-settings-breakpoints.png` — Options: HUD font + elapsed breakpoints
 
 ## CurseForge
 Project listing TBD after author portal setup.
