@@ -1,8 +1,8 @@
-## Interface: 120100, 120007
+## Interface: 120105, 120100, 120007, 16001
 ## Title: StopPlaying
 ## Notes: Session timer for Retail and WoW Forever. Countdown / elapsed HUD with a full-screen stop alert. Drag the HUD chip to move it.
 ## Author: plaskettmj
-## Version: 1.4.4
+## Version: 1.4.5
 ## SavedVariables: StopPlayingDB
 ## OptionalDeps: ElvUI, Masque, Skinner, Aurora, LibSharedMedia-3.0
 ## X-License: MIT

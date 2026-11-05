@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.5
+- TOC: add WoW Forever interface `16001` (and retail `120105`) so the addon no longer shows as out of date on Forever
+
 ## 1.4.4
 - Docs: Retail **and** WoW Forever both supported (install paths + CurseForge link in README)
 - TOC Notes updated for dual-client support; `X-Curse-Project-ID` added
